@@ -1,12 +1,17 @@
-from sqlalchemy import Column, Integer, String, Text
-from .database import Base
+from sqlalchemy import Column, Integer, String, Text, DateTime
+from sqlalchemy.ext.declarative import declarative_base
+from datetime import datetime
+
+Base = declarative_base()
+
 
 class Term(Base):
-    # Имя таблицы в БД
     __tablename__ = "terms"
 
-    # Поля таблицы
     id = Column(Integer, primary_key=True, index=True)
-    term = Column(String, unique=True, index=True, nullable=False)  # Название термина (уникальное)
-    definition = Column(Text, nullable=False)                        # Объяснение
-    example = Column(Text, nullable=True)                            # Пример кода (необязательное)
+    term = Column(String(100), unique=True, nullable=False, index=True)
+    definition = Column(Text, nullable=False)
+    category = Column(String(50), default="General")
+    example = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
