@@ -1,25 +1,29 @@
 from pydantic import BaseModel
+from datetime import datetime
 from typing import Optional
 
-# Схема для создания нового термина (то, что присылает пользователь)
-class TermCreate(BaseModel):
+
+class TermBase(BaseModel):
     term: str
     definition: str
+    category: Optional[str] = "General"
     example: Optional[str] = None
 
-# Схема для обновления термина (все поля необязательные)
+
+class TermCreate(TermBase):
+    pass
+
+
 class TermUpdate(BaseModel):
-    term: Optional[str] = None
     definition: Optional[str] = None
+    category: Optional[str] = None
     example: Optional[str] = None
 
-# Схема для ответа API (то, что мы отправляем пользователю)
-class TermResponse(BaseModel):
+
+class TermResponse(TermBase):
     id: int
-    term: str
-    definition: str
-    example: Optional[str] = None
+    created_at: datetime
+    updated_at: datetime
 
-    # Настройка для работы с SQLAlchemy (преобразует объект БД в dict)
     class Config:
         from_attributes = True
