@@ -1,0 +1,10 @@
+services:
+  glossary-api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./glossary.db:/app/glossary.db
+      - ./:/app
+    environment:
+      - DATABASE_URL=sqlite:////app/glossary.db
